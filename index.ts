@@ -7,12 +7,18 @@ function start() {
     ws.on("error", console.error)
 
     ws.on("message", function message(data) {
-      console.log("received: %s", data)
-      console.log("sending back the time")
+      try {
+        data = JSON.parse(data as unknown as string)
+        console.log({ data })
+      } catch (err) {
+        console.error(err)
+      }
+      // console.log("received: %s", data)
+      // console.log("sending back the time")
 
-      setTimeout(() => {
-        ws.send(+Date.now())
-      }, 1000)
+      // setTimeout(() => {
+      //   ws.send(+Date.now())
+      // }, 1000)
     })
   })
 
