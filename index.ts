@@ -1,4 +1,5 @@
 import { WebSocketServer } from "ws"
+import { channelId } from "@gonetone/get-youtube-id-by-url"
 
 function start() {
   const wss = new WebSocketServer({ port: 8080 })
@@ -9,16 +10,22 @@ function start() {
     ws.on("message", function message(data) {
       try {
         data = JSON.parse(data as unknown as string)
-        console.log({ data })
+        console.log({ data }, data["url"])
+        if (data["url"]) {
+          // Get YouTube Channel ID By Url
+          channelId(data["url"])
+            .then((id) => {
+              console.log(id)
+
+              ws.send(JSON.stringify({ youtubeId: id }))
+            })
+            .catch((e) => {
+              console.error(e)
+            })
+        }
       } catch (err) {
         console.error(err)
       }
-      // console.log("received: %s", data)
-      // console.log("sending back the time")
-
-      // setTimeout(() => {
-      //   ws.send(+Date.now())
-      // }, 1000)
     })
   })
 
