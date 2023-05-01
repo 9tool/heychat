@@ -1,5 +1,6 @@
 import { WebSocketServer } from "ws"
 import { channelId } from "@gonetone/get-youtube-id-by-url"
+import { LiveChat } from "youtube-chat"
 
 function start() {
   const wss = new WebSocketServer({ port: 8080 })
@@ -22,6 +23,33 @@ function start() {
             .catch((e) => {
               console.error(e)
             })
+        } else if (data["command"] == "GET_LIVE_CHAT") {
+          const liveChat = new LiveChat({ channelId: data["youtubeId"] })
+
+          liveChat.on("chat", (chatItem) => {
+            /* Your code here! */
+            // console.log(JSON.stringify(chatItem, null, 2) + ",")
+            ws.send(JSON.stringify({ chat: chatItem }))
+            // console.log("message", chatItem?.message)
+          })
+
+          // liveChat.on("start")
+
+          liveChat.on("error", (err) => {
+            /* Your code here! */
+            console.error({ err })
+            ws.send(JSON.stringify({ error: `${err}` }))
+          })
+
+          liveChat.on("end", () => {
+            /* Your code here! */
+            console.log("end")
+            ws.send(JSON.stringify({ end: true }))
+          })
+
+          liveChat.start()
+        } else {
+          console.error("Unknown message")
         }
       } catch (err) {
         console.error(err)

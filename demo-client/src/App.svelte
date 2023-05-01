@@ -1,12 +1,16 @@
 <script lang="ts">
   import WebSocket from "isomorphic-ws"
+  import Message from "./lib/Message.svelte"
 
   let url: string = "https://www.youtube.com/@9arm."
   let log: string[] = []
   let youtubeId: string = null
+  let chatItems: any[] = []
+  let ws: WebSocket
 
   function connect() {
-    const ws = new WebSocket("ws://localhost:8080")
+    log = []
+    ws = new WebSocket("ws://localhost:8080")
 
     ws.onopen = function open() {
       console.log("connected")
@@ -26,6 +30,8 @@
         const parsed = JSON.parse(data.data as unknown as string)
         if (parsed.youtubeId) {
           youtubeId = parsed.youtubeId
+        } else if (parsed.chat) {
+          chatItems = [...chatItems, parsed.chat].slice(-20)
         }
       } catch (e) {
         console.error(e)
@@ -48,7 +54,7 @@
   let status: string = "ready"
 
   function getLiveChat() {
-    console.log("TODO")
+    ws.send(JSON.stringify({ command: "GET_LIVE_CHAT", youtubeId }))
   }
 </script>
 
@@ -70,8 +76,21 @@
   </div>
 
   <div class="">
-    Log: {JSON.stringify(log)}
+    Chat Items
+    <ul>
+      {#each chatItems as chatItem (chatItem["timestamp"])}
+        <li>
+          {chatItem["author"]["name"]}: <Message
+            message={chatItem["message"]}
+          />
+        </li>
+      {/each}
+    </ul>
   </div>
+
+  <!-- <div class="">
+    Log: {JSON.stringify(log)}
+  </div> -->
 </main>
 
 <style>
