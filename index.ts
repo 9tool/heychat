@@ -1,5 +1,5 @@
 import { WebSocketServer } from "ws"
-import { channelId } from "@gonetone/get-youtube-id-by-url"
+import { channelId } from "./GetYoutubeId.js"
 import { LiveChat } from "youtube-chat"
 
 function start() {
