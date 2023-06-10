@@ -1,5 +1,5 @@
 // run `node index.js` in the terminal
-const { LiveChat } = require("youtube-chat")
+const { LiveChat } = require("narze-youtube-chat")
 // const liveChat = new LiveChat({channelId: "UCoiEtD4v1qMAqHV5MDI5Qpg"}) // 9arm
 const liveChat = new LiveChat({ channelId: "UCSJ4gkVC6NrvII8umztf0Ow" }) // LofiGirl
 // const liveChat = new LiveChat({ channelId: "UC4plRabXFGdAE6HP-tBQKdQ" }) // HRK

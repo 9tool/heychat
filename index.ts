@@ -1,6 +1,6 @@
 import { WebSocketServer } from "ws"
 import { channelId } from "./GetYoutubeId.js"
-import { LiveChat } from "youtube-chat"
+import { LiveChat } from "narze-youtube-chat"
 
 const chats = {}
 
