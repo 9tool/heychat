@@ -343,10 +343,10 @@ mime-types@^2.1.12:
   dependencies:
     mime-db "1.52.0"
 
-narze-youtube-chat@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/narze-youtube-chat/-/narze-youtube-chat-2.2.1.tgz#e4d7eea04535c0a4a2a66327242bd601c87275ee"
-  integrity sha512-vdNNzZokQjgnOw6KAQ0qHcrn8JL/PnHotFT+zM5R16Y1HYtgmWb7IAEJlkm5h9f1dEMwlg7Mr0XU5uUY8JSKUw==
+narze-youtube-chat@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/narze-youtube-chat/-/narze-youtube-chat-2.2.2.tgz#d4942fe2b31f2db53a45a625f41c83b8f778ad0c"
+  integrity sha512-eZAdOYDG6hZSIbqHT4ABQ8HV4gHgHCGVuMXjWNva9oUx+bv9wY07b9pU6viyO3owliIufGGif1pBxh9lvaBHIg==
   dependencies:
     axios "^1.2.0"
     typed-emitter "^2.1.0"
@@ -430,9 +430,3 @@ ws@^8.13.0:
   version "8.13.0"
   resolved "https://registry.yarnpkg.com/ws/-/ws-8.13.0.tgz#9a9fb92f93cf41512a0735c8f4dd09b8a1211cd0"
   integrity sha512-x9vcZYTrFPC7aSIbj7sRCYo7L/Xb8Iy+pW0ng0wt2vCJv7M9HOMy0UoN3rr+IFC7hb7vXoqS+P9ktyLLLhO+LA==
-
-"youtube-chat@file:../../narze/youtube-chat":
-  version "2.2.1"
-  dependencies:
-    axios "^1.2.0"
-    typed-emitter "^2.1.0"
