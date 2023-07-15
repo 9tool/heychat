@@ -67,7 +67,9 @@ function startLiveChat(channelId: string, ws: WebSocket) {
     // console.log("message", chatItem?.message)
   })
 
-  // liveChat.on("start")
+  liveChat.on("start", (liveChatId) => {
+    console.log("started", liveChatId)
+  })
 
   liveChat.on("error", (err) => {
     /* Your code here! */
