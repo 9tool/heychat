@@ -1,21 +1,25 @@
 import { WebSocketServer } from "ws"
-import { channelId } from "./GetYoutubeId.js"
+import { channelId } from "./GetYoutubeId"
 import { LiveChat } from "narze-youtube-chat"
 
-const chats = {}
+interface ChatMap {
+  [key: string]: LiveChat
+}
+
+const chats: ChatMap = {}
 
 function start() {
   const wss = new WebSocketServer({ port: 8080 })
 
   wss.on("connection", function connection(ws, req) {
-    ws.id = req.headers["sec-websocket-key"]
+    const id = req.headers["sec-websocket-key"]!
 
     ws.on("error", console.error)
 
     ws.on("close", function close() {
-      if (chats[ws.id]) {
-        chats[ws.id].stop()
-        delete chats[ws.id]
+      if (chats[id]) {
+        chats[id].stop()
+        delete chats[id]
       }
     })
 
@@ -23,28 +27,37 @@ function start() {
       try {
         data = JSON.parse(data as unknown as string)
 
-        if (data["youtubeUrl"]) {
+        if ("youtubeUrl" in data) {
           // Get YouTube Channel ID By Url & sent live chat events
-          channelId(data["youtubeUrl"])
+          const youtubeUrl = data["youtubeUrl"] as string
+
+          channelId(youtubeUrl)
             .then((id) => {
               const chat = startLiveChat(id, ws)
-              chats[ws.id] = chat
+              chats[id] = chat
             })
             .catch((e) => {
               console.error(e)
             })
-        } else if (data["url"]) {
+        } else if ("url" in data) {
           // Get YouTube Channel ID By Url
-          channelId(data["url"])
+          const url = data["url"] as string
+
+          channelId(url)
             .then((id) => {
               ws.send(JSON.stringify({ youtubeId: id }))
             })
             .catch((e) => {
               console.error(e)
             })
-        } else if (data["command"] == "GET_LIVE_CHAT") {
-          const chat = startLiveChat(data["youtubeId"], ws)
-          chats[ws.id] = chat
+        } else if (
+          "command" in data &&
+          (data["command"] as string) == "GET_LIVE_CHAT"
+        ) {
+          const youtubeId =
+            "youtubeId" in data ? (data["youtubeId"] as string) : ""
+          const chat = startLiveChat(youtubeId, ws)
+          chats[id] = chat
         } else {
           console.error("Unknown message")
         }
@@ -57,7 +70,7 @@ function start() {
   console.log("Server Started @ port", wss.options.port)
 }
 
-function startLiveChat(channelId: string, ws: WebSocket) {
+function startLiveChat(channelId: string, ws: import("ws")) {
   const liveChat = new LiveChat({ channelId })
 
   liveChat.on("chat", (chatItem) => {
