@@ -38,7 +38,9 @@ connect(
       .withDirectory("/app/node_modules", runner.directory("./node_modules"))
       .withEntrypoint(["node", "/app/index.js"])
       .withExposedPort(8080)
-      .publish("ttl.sh/heychat-" + Math.floor(Math.random() * 10000000))
+      // .publish("ttl.sh/heychat-" + Math.floor(Math.random() * 10000000))
+      .publish("ghcr.io/9tool/heychat:latest")
+
     console.log(`Published image to: ${imageRef}`)
   },
   { LogOutput: process.stdout }
